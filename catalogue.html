@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Catalogue — Jumpi’fun</title>
+  <meta name="description" content="Découvrez le catalogue Jumpi’fun : structures gonflables, machines à gourmandises et matériel événementiel à louer." />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="navbar">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🎈</span>
+        <span>Jumpi’fun</span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle">☰</button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="tarifs.html">Tarifs</a>
+        <a href="zones.html">Zones</a>
+        <a href="contact.html" class="nav-cta">Devis</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <p class="badge">Catalogue Jumpi’fun</p>
+      <h1>Nos locations événementielles</h1>
+      <p>
+        Filtrez les animations, consultez les informations principales et ajoutez
+        vos choix à votre demande de devis.
+      </p>
+    </section>
+
+    <section class="section">
+
+      <div class="catalogue-toolbar">
+        <div class="catalogue-filters">
+          <button class="filter-btn active" data-filter="all">Tout</button>
+          <button class="filter-btn" data-filter="gonflable">Structures gonflables</button>
+          <button class="filter-btn" data-filter="gourmandise">Machines gourmandes</button>
+          <button class="filter-btn" data-filter="materiel">Matériel événementiel</button>
+        </div>
+
+        <input
+          type="search"
+          id="searchInput"
+          class="catalogue-search"
+          placeholder="Rechercher une animation..."
+        />
+      </div>
+
+      <div class="catalogue-layout">
+        <div class="products-grid" id="productsGrid"></div>
+
+        <aside class="quote-box">
+          <h2>Mon devis</h2>
+          <p>Ajoutez les produits souhaités, puis envoyez votre demande.</p>
+
+          <div id="quoteItems" class="quote-items">
+            <p class="empty-cart">Aucun produit sélectionné.</p>
+          </div>
+
+          <div class="quote-total">
+            <span>Total estimatif</span>
+            <strong id="quoteTotal">0€</strong>
+          </div>
+
+          <a href="contact.html" class="btn-primary full-btn" id="goToQuote">
+            Continuer vers le devis
+          </a>
+
+          <small>
+            Les tarifs sont indicatifs. Le prix final dépend de la date,
+            du lieu, de la durée, de l’accès et des options.
+          </small>
+        </aside>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Jumpi’fun — Location de structures gonflables et matériel événementiel.</p>
+  </footer>
+
+  <script src="data/produits.js"></script>
+  <script src="js/script.js"></script>
+
+  <script>
+    const productsGrid = document.getElementById("productsGrid");
+    const searchInput = document.getElementById("searchInput");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const quoteItems = document.getElementById("quoteItems");
+    const quoteTotal = document.getElementById("quoteTotal");
+    const goToQuote = document.getElementById("goToQuote");
+
+    let currentFilter = "all";
+    let selectedProducts = JSON.parse(localStorage.getItem("jumpifun_devis")) || [];
+
+    function renderProducts() {
+      const search = searchInput.value.toLowerCase();
+
+      const filteredProducts = produits.filter((produit) => {
+        const matchCategory =
+          currentFilter === "all" || produit.categorie === currentFilter;
+
+        const matchSearch =
+          produit.nom.toLowerCase().includes(search) ||
+          produit.description.toLowerCase().includes(search) ||
+          produit.options.join(" ").toLowerCase().includes(search);
+
+        return matchCategory && matchSearch;
+      });
+
+      productsGrid.innerHTML = filteredProducts.map((produit) => `
+        <article class="product-card">
+          <div class="product-emoji">${produit.emoji}</div>
+
+          <div class="product-content">
+            <span class="product-category">${formatCategory(produit.categorie)}</span>
+            <h3>${produit.nom}</h3>
+            <p>${produit.description}</p>
+
+            <div class="product-details">
+              <span>👶 ${produit.age}</span>
+              <span>👥 ${produit.capacite}</span>
+              <span>📏 ${produit.dimensions}</span>
+            </div>
+
+            <div class="product-options">
+              ${produit.options.map(option => `<small>${option}</small>`).join("")}
+            </div>
+
+            <div class="product-bottom">
+              <strong>${produit.prix}€</strong>
+              <button onclick="addToQuote(${produit.id})">Ajouter au devis</button>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function formatCategory(category) {
+      if (category === "gonflable") return "Structure gonflable";
+      if (category === "gourmandise") return "Machine gourmande";
+      if (category === "materiel") return "Matériel événementiel";
+      return category;
+    }
+
+    function addToQuote(productId) {
+      const product = produits.find((item) => item.id === productId);
+
+      if (!selectedProducts.find((item) => item.id === productId)) {
+        selectedProducts.push(product);
+      }
+
+      saveQuote();
+      renderQuote();
+    }
+
+    function removeFromQuote(productId) {
+      selectedProducts = selectedProducts.filter((item) => item.id !== productId);
+      saveQuote();
+      renderQuote();
+    }
+
+    function saveQuote() {
+      localStorage.setItem("jumpifun_devis", JSON.stringify(selectedProducts));
+    }
+
+    function renderQuote() {
+      if (selectedProducts.length === 0) {
+        quoteItems.innerHTML = `<p class="empty-cart">Aucun produit sélectionné.</p>`;
+      } else {
+        quoteItems.innerHTML = selectedProducts.map((produit) => `
+          <div class="quote-item">
+            <span>${produit.emoji} ${produit.nom}</span>
+            <button onclick="removeFromQuote(${produit.id})">×</button>
+          </div>
+        `).join("");
+      }
+
+      const total = selectedProducts.reduce((sum, item) => sum + item.prix, 0);
+      quoteTotal.textContent = total + "€";
+    }
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        filterButtons.forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        currentFilter = button.dataset.filter;
+        renderProducts();
+      });
+    });
+
+    searchInput.addEventListener("input", renderProducts);
+
+    goToQuote.addEventListener("click", () => {
+      localStorage.setItem("jumpifun_devis", JSON.stringify(selectedProducts));
+    });
+
+    renderProducts();
+    renderQuote();
+  </script>
+
+</body>
+</html>

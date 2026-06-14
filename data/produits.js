@@ -1,0 +1,110 @@
+const produits = [
+  {
+    id: 1,
+    nom: "Château gonflable classique",
+    categorie: "gonflable",
+    emoji: "🏰",
+    prix: 120,
+    age: "3 à 10 ans",
+    capacite: "8 à 10 enfants",
+    dimensions: "À préciser",
+    description: "Structure idéale pour les anniversaires, fêtes familiales et petits événements.",
+    options: ["Installation incluse", "Conseils sécurité", "Extérieur"]
+  },
+  {
+    id: 2,
+    nom: "Parcours gonflable",
+    categorie: "gonflable",
+    emoji: "🛝",
+    prix: 220,
+    age: "5 à 12 ans",
+    capacite: "10 à 15 enfants",
+    dimensions: "À préciser",
+    description: "Animation dynamique parfaite pour kermesses, écoles, associations et collectivités.",
+    options: ["Grand format", "Très visuel", "Fort débit enfants"]
+  },
+  {
+    id: 3,
+    nom: "Toboggan gonflable",
+    categorie: "gonflable",
+    emoji: "🌈",
+    prix: 250,
+    age: "4 à 12 ans",
+    capacite: "8 à 12 enfants",
+    dimensions: "À préciser",
+    description: "Une animation spectaculaire pour apporter un vrai effet waouh à votre événement.",
+    options: ["Très demandé", "Idéal extérieur", "Animation phare"]
+  },
+  {
+    id: 4,
+    nom: "Machine à barbe à papa",
+    categorie: "gourmandise",
+    emoji: "🍭",
+    prix: 70,
+    age: "Tout public",
+    capacite: "Selon portions",
+    dimensions: "Compact",
+    description: "Une animation gourmande incontournable pour enfants, familles et événements festifs.",
+    options: ["Sucre inclus selon formule", "Animation conviviale", "Succès garanti"]
+  },
+  {
+    id: 5,
+    nom: "Machine à pop-corn",
+    categorie: "gourmandise",
+    emoji: "🍿",
+    prix: 70,
+    age: "Tout public",
+    capacite: "Selon portions",
+    dimensions: "Compact",
+    description: "Parfaite pour créer une ambiance fête foraine, cinéma ou kermesse.",
+    options: ["Maïs inclus selon formule", "Odeur attractive", "Service rapide"]
+  },
+  {
+    id: 6,
+    nom: "Machine à granité",
+    categorie: "gourmandise",
+    emoji: "🥤",
+    prix: 90,
+    age: "Tout public",
+    capacite: "Selon litres",
+    dimensions: "À préciser",
+    description: "Idéale pour les événements d’été, fêtes en extérieur et journées associatives.",
+    options: ["Très appréciée l’été", "Plusieurs parfums possibles", "Tout public"]
+  },
+  {
+    id: 7,
+    nom: "Barnum événementiel",
+    categorie: "materiel",
+    emoji: "⛺",
+    prix: 130,
+    age: "Tout public",
+    capacite: "Selon format",
+    dimensions: "3x3m, 3x6m ou autre",
+    description: "Solution pratique pour abriter vos invités, stands, buffets ou animations.",
+    options: ["Protection pluie/soleil", "Mariage", "Association"]
+  },
+  {
+    id: 8,
+    nom: "Tables et chaises",
+    categorie: "materiel",
+    emoji: "🪑",
+    prix: 60,
+    age: "Tout public",
+    capacite: "Selon quantité",
+    dimensions: "Selon stock",
+    description: "Matériel indispensable pour repas, goûters, buffets, réunions et événements.",
+    options: ["Pratique", "Pack possible", "Événement familial ou public"]
+  },
+  {
+    id: 9,
+    nom: "Sono et lumières",
+    categorie: "materiel",
+    emoji: "🎶",
+    prix: 150,
+    age: "Tout public",
+    capacite: "Petits et moyens événements",
+    dimensions: "Selon configuration",
+    description: "Pour ajouter de l’ambiance à vos anniversaires, soirées et événements privés.",
+    options: ["Bluetooth possible", "Ambiance festive", "Soirée"]
+  }
+];

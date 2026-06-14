@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Demande de devis — Jumpi’fun</title>
+  <meta name="description" content="Demandez un devis Jumpi’fun pour la location de structures gonflables, machines à gourmandises et matériel événementiel." />
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+
+  <header class="header">
+    <nav class="navbar">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🎈</span>
+        <span>Jumpi’fun</span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle">☰</button>
+
+      <div class="nav-links" id="navLinks">
+        <a href="index.html">Accueil</a>
+        <a href="catalogue.html">Catalogue</a>
+        <a href="tarifs.html">Tarifs</a>
+        <a href="zones.html">Zones</a>
+        <a href="contact.html" class="nav-cta">Devis</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="page-hero">
+      <p class="badge">Demande de devis</p>
+      <h1>Parlez-nous de votre événement</h1>
+      <p>
+        Remplissez les informations principales. Jumpi’fun vous recontactera
+        avec une proposition adaptée à votre date, votre lieu et votre besoin.
+      </p>
+    </section>
+
+    <section class="section contact-layout">
+
+      <form class="contact-form" id="contactForm">
+        <h2>Votre demande</h2>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nom / Prénom *</label>
+            <input type="text" name="nom" required placeholder="Votre nom" />
+          </div>
+
+          <div class="form-group">
+            <label>Téléphone *</label>
+            <input type="tel" name="telephone" required placeholder="06 00 00 00 00" />
+          </div>
+
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" name="email" required placeholder="votre@email.fr" />
+          </div>
+
+          <div class="form-group">
+            <label>Date de l’événement *</label>
+            <input type="date" name="date" required />
+          </div>
+
+          <div class="form-group">
+            <label>Type d’événement</label>
+            <select name="evenement">
+              <option value="">Sélectionner</option>
+              <option>Anniversaire</option>
+              <option>Kermesse / école</option>
+              <option>Fête communale</option>
+              <option>Mariage</option>
+              <option>Entreprise</option>
+              <option>Association</option>
+              <option>Autre</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Commune de l’événement *</label>
+            <input type="text" name="commune" required placeholder="Ex : Limetz-Villez" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Matériel souhaité</label>
+          <textarea id="materielSouhaite" name="materiel" placeholder="Structures, machines, barnum, tables, chaises..."></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Message complémentaire</label>
+          <textarea name="message" placeholder="Nombre d’enfants, horaires, accès, terrain, besoin particulier..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary">Envoyer ma demande</button>
+
+        <p class="form-note">
+          Pour connecter réellement ce formulaire : Formspree, Netlify Forms,
+          EmailJS, Make, Airtable ou backend personnalisé.
+        </p>
+      </form>
+
+      <aside class="contact-side">
+        <div class="side-card">
+          <h2>Récapitulatif</h2>
+          <p>Produits sélectionnés depuis le catalogue :</p>
+
+          <div id="selectedProducts" class="selected-products">
+            <p>Aucun produit sélectionné.</p>
+          </div>
+
+          <div class="quote-total light">
+            <span>Total estimatif</span>
+            <strong id="selectedTotal">0€</strong>
+          </div>
+
+          <button class="btn-secondary full-btn" id="clearSelection" type="button">
+            Vider la sélection
+          </button>
+        </div>
+
+        <div class="side-card">
+          <h2>Contact direct</h2>
+          <p>
+            Vous pouvez aussi ajouter ici votre téléphone, email, lien Facebook,
+            Instagram ou WhatsApp.
+          </p>
+
+          <div class="contact-lines">
+            <a href="tel:+33000000000">📞 00 00 00 00 00</a>
+            <a href="mailto:contact@jumpifun.fr">✉️ contact@jumpifun.fr</a>
+            <a href="#">💬 WhatsApp</a>
+            <a href="#">📘 Facebook</a>
+          </div>
+        </div>
+      </aside>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© 2026 Jumpi’fun — Location de structures gonflables et matériel événementiel.</p>
+  </footer>
+
+  <script src="js/script.js"></script>
+
+  <script>
+    const selectedProductsBox = document.getElementById("selectedProducts");
+    const selectedTotal = document.getElementById("selectedTotal");
+    const materielSouhaite = document.getElementById("materielSouhaite");
+    const clearSelection = document.getElementById("clearSelection");
+    const contactForm = document.getElementById("contactForm");
+
+    let selectedProducts = JSON.parse(localStorage.getItem("jumpifun_devis")) || [];
+
+    function renderSelectedProducts() {
+      if (selectedProducts.length === 0) {
+        selectedProductsBox.innerHTML = "<p>Aucun produit sélectionné.</p>";
+        selectedTotal.textContent = "0€";
+        materielSouhaite.value = "";
+        return;
+      }
+
+      selectedProductsBox.innerHTML = selectedProducts.map((produit) => `
+        <div class="selected-line">
+          <span>${produit.emoji || ""} ${produit.nom}</span>
+          <strong>${produit.prix}€</strong>
+        </div>
+      `).join("");
+
+      const total = selectedProducts.reduce((sum, produit) => sum + produit.prix, 0);
+      selectedTotal.textContent = total + "€";
+
+      materielSouhaite.value = selectedProducts
+        .map((produit) => `${produit.nom} (${produit.prix}€)`)
+        .join(", ");
+    }
+
+    clearSelection.addEventListener("click", () => {
+      localStorage.removeItem("jumpifun_devis");
+      selectedProducts = [];
+      renderSelectedProducts();
+    });
+
+    contactForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      alert(
+        "Votre demande est prête. Il reste à connecter le formulaire à un service d’envoi."
+      );
+    });
+
+    renderSelectedProducts();
+  </script>
+
+</body>
+</html>
